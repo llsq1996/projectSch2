@@ -15,6 +15,7 @@ public class UserController {
         User user=new User();
         user.setUserId(1);
         user.setAccount(2);
+
         userMapper.addUser(user);
     }
 }
