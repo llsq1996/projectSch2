@@ -24,7 +24,7 @@ public class UserController {
      * @param userName
      * @return
      */
-    @RequestMapping("/test")
+    @RequestMapping("/test") //get请求或post请求的映射，当地址为/test运行下面
     @ResponseBody
     JSONObject test(@Param("userName") String userName){
         User user=new User();

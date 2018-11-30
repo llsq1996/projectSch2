@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.ShopMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.Shop">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="sp_name" property="spName" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="leader" property="leader" jdbcType="VARCHAR"/>
+        <result column="leader_phone" property="leaderPhone" jdbcType="VARCHAR"/>
+        <result column="cus_service" property="cusService" jdbcType="VARCHAR"/>
+        <result column="cus_phone" property="cusPhone" jdbcType="VARCHAR"/>
+        <result column="category" property="category" jdbcType="INTEGER"/>
+        <result column="pic_address" property="picAddress" jdbcType="VARCHAR"/>
+        <result column="valid" property="valid" jdbcType="INTEGER"/>
+        <result column="is_tradeMark" property="isTradeMark" jdbcType="INTEGER"/>
+        <result column="c_time" property="cTime" jdbcType="TIMESTAMP"/>
+        <result column="e_time" property="eTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+    id,sp_name,address,leader,leader_phone,cus_service,cus_phone,category,
+    pic_address,valid,is_tradeMark,c_time,e_time
+    </sql>
+    <sql id="Base_Column_List_NoId">
+    sp_name,address,leader,leader_phone,cus_service,cus_phone,category,
+    pic_address,valid,is_tradeMark,c_time,e_time
+    </sql>
+    <sql id="Base_Name">
+        proj_shop
+    </sql>
+    <insert id="shopAdd" parameterType="com.example.demo.entity.Shop">
+        insert into<include refid="Base_Name"/>(<include refid="Base_Column_List_NoId"/>)
+        values (#{shop.spName},#{shop.address},#{shop.leader},#{shop.leaderPhone},
+        #{shop.cusService},#{shop.cusPhone},#{shop.category},#{shop.picAddress},1,
+        #{shop.isTradeMark},current_timestamp() ,current_timestamp())
+    </insert>
+    <select id="getAllShop" resultMap="BaseResultMap">
+        select * from
+        <include refid="Base_Name"/>
+    </select>
+</mapper>
