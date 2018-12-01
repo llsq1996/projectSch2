@@ -12,7 +12,6 @@ public class Shop {
     private String address;
     private String leader;
     private String leaderPhone;
-    private String cusService;
     private String cusPhone;
     private Integer category;
     private String picAddress;
