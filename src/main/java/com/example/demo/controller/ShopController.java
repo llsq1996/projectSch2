@@ -4,7 +4,6 @@ import com.example.demo.entity.Shop;
 import com.example.demo.entity.exEntity.UploadFile;
 import com.example.demo.mapper.ShopMapper;
 import com.example.demo.util.ToJsonObject;
-import com.google.common.reflect.ClassPath;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 @Controller
