@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.RegionMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.Provincial">
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    pid,province
+    </sql>
+    <sql id="Base_Name">
+        provincial
+    </sql>
+    <select id="getProvince" resultMap="BaseResultMap">
+        select * from
+        <include refid="Base_Name"/>
+    </select>
+</mapper>
