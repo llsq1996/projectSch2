@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Provincial;
+
+import com.example.demo.entity.Provinces;
 import com.example.demo.mapper.RegionMapper;
 import com.example.demo.util.ToJsonObject;
 import net.sf.json.JSONObject;
@@ -17,8 +18,8 @@ public class RegionController {
     private RegionMapper regionMapper;
     @GetMapping("/RegionTest")
     @ResponseBody
-    JSONObject getProvince(@Param("provincial") Provincial provincial) {
-       List<Provincial>list=regionMapper.getProvince();
+    JSONObject getProvince(@Param("provinces") Provinces provinces) {
+       List<Provinces>list=regionMapper.getProvince();
         System.out.println("aaa");
             return ToJsonObject.getJSONObject(list, "success",1);
 
