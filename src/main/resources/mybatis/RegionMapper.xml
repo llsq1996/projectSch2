@@ -5,15 +5,33 @@
         <result column="id" property="id" jdbcType="INTEGER"/>
         <result column="provinceid" property="provinceid" jdbcType="VARCHAR"/>
         <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="cityid" property="cityid" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="BaseResultMap1" type="com.example.demo.entity.Cities">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="cityid" property="cityid" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="provinceid" property="provinceid" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
     id,provinceid,province
     </sql>
+    <sql id="Base_Column_List1">
+    id,cityid,city,provinceid
+    </sql>
     <sql id="Base_Name">
         provinces
+    </sql>
+    <sql id="Base_Name1">
+        cities
     </sql>
     <select id="getProvince" resultMap="BaseResultMap">
         select * from
         <include refid="Base_Name"/>
+    </select>
+    <select id="getCity" resultMap="BaseResultMap1">
+        select * from
+        <include refid="Base_Name1"/> where provinceid=#{provinceid}
     </select>
 </mapper>
