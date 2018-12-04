@@ -27,8 +27,8 @@ public class RegionController {
     }
     @GetMapping("/RegionTest1")
     @ResponseBody
-    JSONObject getCity(@Param("cities") Cities cities,String provinceid) {
-        List<Cities>list=regionMapper.getCity(provinceid);
+    JSONObject getCity() {
+        List<Cities>list=regionMapper.getCity("110000");
         System.out.println("aaa");
         return ToJsonObject.getJSONObject(list, "success",1);
 
