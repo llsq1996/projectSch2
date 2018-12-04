@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.entity.Areas;
 import com.example.demo.entity.Cities;
 import com.example.demo.entity.Provinces;
 import com.example.demo.mapper.RegionMapper;

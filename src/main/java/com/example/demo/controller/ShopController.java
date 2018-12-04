@@ -28,10 +28,9 @@ public class ShopController {
     @PostMapping("/shopAdd")
     @ResponseBody
     JSONObject shopAdd(@Param("shop") Shop shop) {
-        System.out.println(shop);
         if(1==shopMapper.shopAdd(shop)){
             System.out.println(shop);
-            return ToJsonObject.getSuccessJSONObject(null);
+            return ToJsonObject.getSuccessJSONObject(shop.getId());
         }else{
             return ToJsonObject.getFailJSONObject(null);
         }
