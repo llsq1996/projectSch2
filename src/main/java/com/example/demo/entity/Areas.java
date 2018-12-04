@@ -1,5 +1,8 @@
 package com.example.demo.entity;
 
+import lombok.Data;
+
+@Data
 public class Areas {
     private Integer id;
     private  String areaid;

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.entity.Areas;
 import com.example.demo.entity.Cities;
 import com.example.demo.entity.Provinces;
 import com.example.demo.mapper.RegionMapper;
@@ -27,8 +28,20 @@ public class RegionController {
     }
     @GetMapping("/RegionTest1")
     @ResponseBody
-    JSONObject getCity(@Param("cities") Cities cities,String provinceid) {
-        List<Cities>list=regionMapper.getCity(provinceid);
+    JSONObject getCity(@Param("provinceId") String provinceId) {
+        System.out.println(provinceId);
+        List<Cities>list=regionMapper.getCity(provinceId);
+        System.out.println(list);
+        System.out.println("aaa");
+        return ToJsonObject.getJSONObject(list, "success",1);
+
+    }
+    @GetMapping("/RegionTest2")
+    @ResponseBody
+    JSONObject getArea(@Param("cityId") String cityId) {
+        System.out.println(cityId);
+        List<Areas>list=regionMapper.getArea(cityId);
+        System.out.println(list);
         System.out.println("aaa");
         return ToJsonObject.getJSONObject(list, "success",1);
 
