@@ -20,11 +20,10 @@ public class RegionController {
     private RegionMapper regionMapper;
     @GetMapping("/RegionTest")
     @ResponseBody
-    JSONObject getProvince(@Param("provinces") Provinces provinces) {
+    JSONObject getProvince() {
        List<Provinces>list=regionMapper.getProvince();
         System.out.println("aaa");
             return ToJsonObject.getJSONObject(list, "success",1);
-
     }
     @GetMapping("/RegionTest1")
     @ResponseBody
