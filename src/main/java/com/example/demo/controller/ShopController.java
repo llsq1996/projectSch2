@@ -28,10 +28,12 @@ public class ShopController {
     @PostMapping("/shopAdd")
     @ResponseBody
     JSONObject shopAdd(@Param("shop") Shop shop) {
+        System.out.println(shop);
         if(1==shopMapper.shopAdd(shop)){
-            return ToJsonObject.getJSONObject(null, "success");
+            System.out.println(shop);
+            return ToJsonObject.getSuccessJSONObject(null);
         }else{
-            return ToJsonObject.getJSONObject(null, "fail");
+            return ToJsonObject.getFailJSONObject(null);
         }
     }
 
@@ -52,7 +54,7 @@ public class ShopController {
                File upload = new File(path.getAbsolutePath(),"static/picture/"+filename.getName());
                if(!upload.exists()){
                    if(!upload.createNewFile()){
-                       return ToJsonObject.getJSONObject(null, "success");
+                       return ToJsonObject.getSuccessJSONObject(null);
                    }
                }
                FileOutputStream outputStream=new FileOutputStream(upload);
@@ -63,7 +65,7 @@ public class ShopController {
            }
 
        }
-        return ToJsonObject.getJSONObject(null, "success");
+        return ToJsonObject.getSuccessJSONObject(null);
     }
 
 

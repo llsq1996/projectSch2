@@ -28,6 +28,6 @@ public class UserController {
         user.setAccount(2);
 //        userMapper.addUser(user);
         System.out.println(userName);
-        return ToJsonObject.getJSONObject(user,"");
+        return ToJsonObject.getSuccessJSONObject(user);
     }
 }

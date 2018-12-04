@@ -20,7 +20,7 @@ public class RegionController {
     JSONObject getProvince(@Param("provincial") Provincial provincial) {
        List<Provincial>list=regionMapper.getProvince();
         System.out.println("aaa");
-            return ToJsonObject.getJSONObject(list, "success");
+            return ToJsonObject.getJSONObject(list, "success",1);
 
     }
 
