@@ -52,4 +52,22 @@
         <include refid="Base_Name_Area"/>
         where cityId=#{cityId}
     </select>
+
+    <select id="getProName" >
+        select province from
+        <include refid="Base_Name_Pro"/>
+        where provinceid=#{provinceId}
+    </select>
+
+    <select id="getCityName" >
+        select city from
+        <include refid="Base_Name_City"/>
+        where cityid=#{cityId}
+    </select>
+    <select id="getAreaName" >
+        select area from
+        <include refid="Base_Name_Area"/>
+        where areaid=#{areaId}
+    </select>
+
 </mapper>

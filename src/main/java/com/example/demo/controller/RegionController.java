@@ -18,32 +18,24 @@ import java.util.List;
 public class RegionController {
     @Autowired
     private RegionMapper regionMapper;
-    @GetMapping("/RegionTest")
+    @GetMapping("/getProvince")
     @ResponseBody
     JSONObject getProvince() {
        List<Provinces>list=regionMapper.getProvince();
-        System.out.println("aaa");
-            return ToJsonObject.getJSONObject(list, "success",1);
+            return ToJsonObject.getSuccessJSONObject(list);
     }
-    @GetMapping("/RegionTest1")
+    @GetMapping("/getCity")
     @ResponseBody
     JSONObject getCity(@Param("provinceId") String provinceId) {
-        System.out.println(provinceId);
         List<Cities>list=regionMapper.getCity(provinceId);
-        System.out.println(list);
-        System.out.println("aaa");
-        return ToJsonObject.getJSONObject(list, "success",1);
+        return ToJsonObject.getSuccessJSONObject(list);
 
     }
-    @GetMapping("/RegionTest2")
+    @GetMapping("/getArea")
     @ResponseBody
     JSONObject getArea(@Param("cityId") String cityId) {
-        System.out.println(cityId);
         List<Areas>list=regionMapper.getArea(cityId);
-        System.out.println(list);
-        System.out.println("aaa");
-        return ToJsonObject.getJSONObject(list, "success",1);
-
+        return ToJsonObject.getSuccessJSONObject(list);
     }
 
 
