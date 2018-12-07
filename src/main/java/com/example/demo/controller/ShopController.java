@@ -15,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,25 +36,27 @@ public class ShopController {
 
     @PostMapping("/shopAdd")
     @ResponseBody
-    JSONObject shopAdd(@Param("shop") ShopRec shopRec) {
+    JSONObject shopAdd( ShopRec shopRec) {
         System.out.println(shopRec);
-//        Shop shop=new Shop();
-//        BeanUtils.copyProperties(shopRec,shop);
-//        shop.setAddress(getName(shopRec.getAddressList()));
-//        System.out.println(shop);
-//        if(1==shopMapper.shopAdd(shop)){
-//            System.out.println(shop);
-//            return ToJsonObject.getSuccessJSONObject(shop.getId());
-//        }else{
-//            return ToJsonObject.getFailJSONObject(null);
-//        }
-    return ToJsonObject.getSuccessJSONObject(null);
+        Shop shop=new Shop();
+        BeanUtils.copyProperties(shopRec,shop);
+        shop.setAddress(getName(shopRec.getAddressList().split(",")));
+        System.out.println(shop);
+        if(1==shopMapper.shopAdd(shop)){
+            System.out.println(shop);
+            return ToJsonObject.getSuccessJSONObject(shop.getId());
+        }else{
+            return ToJsonObject.getFailJSONObject(null);
+        }
     }
-    private String getName(List<String> list){
-        if(list.size()==3){
-            return regionMapper.getProName(list.get(0))+
-                    regionMapper.getCityName(list.get(1))+
-                    regionMapper.getAreaName(list.get(2));
+    private String getName(String[] list){
+        for (int i = 0; i <list.length ; i++) {
+            System.out.println(list[i]);
+        }
+        if(list.length==3){
+            return regionMapper.getProName(list[0])+
+                    regionMapper.getCityName(list[1])+
+                    regionMapper.getAreaName(list[2]);
         }else {
             return "";
         }

@@ -53,18 +53,18 @@
         where cityId=#{cityId}
     </select>
 
-    <select id="getProName" >
+    <select id="getProName" resultType="string">
         select province from
         <include refid="Base_Name_Pro"/>
         where provinceid=#{provinceId}
     </select>
 
-    <select id="getCityName" >
+    <select id="getCityName"  resultType="string">
         select city from
         <include refid="Base_Name_City"/>
         where cityid=#{cityId}
     </select>
-    <select id="getAreaName" >
+    <select id="getAreaName"  resultType="string">
         select area from
         <include refid="Base_Name_Area"/>
         where areaid=#{areaId}
