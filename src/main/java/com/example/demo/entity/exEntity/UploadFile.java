@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class UploadFile {
     String name;
+    Integer id;
 }

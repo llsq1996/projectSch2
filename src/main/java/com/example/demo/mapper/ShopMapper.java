@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper
 public interface ShopMapper {
     int shopAdd(@Param("shop") Shop shop);
-
     List<Shop> getAllShop();
+    int updateAddress(@Param("id") Integer id,@Param("picName") String picName);
 }

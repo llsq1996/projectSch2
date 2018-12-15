@@ -38,4 +38,10 @@
         select * from
         <include refid="Base_Name"/>
     </select>
+    <update id="updateAddress">
+        update
+        <include refid="Base_Name"/>
+        set pic_address=#{picName}
+        where id=#{id}
+    </update>
 </mapper>

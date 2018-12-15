@@ -52,4 +52,17 @@ public class ToJsonObject {
         jsonObject.put("code",-1);
         return jsonObject;
     }
+    static public JSONObject getFailJSONObject2(Object ob,String meg){
+        JSONObject jsonObject=new JSONObject();
+        if(Objects.nonNull(ob)){
+            jsonObject.put("data",ob);
+            jsonObject.put("msg","fail");
+            jsonObject.put("code",-1);
+            return jsonObject;
+        }
+        jsonObject.put("data","");
+        jsonObject.put("msg",meg);
+        jsonObject.put("code",-1);
+        return jsonObject;
+    }
 }
