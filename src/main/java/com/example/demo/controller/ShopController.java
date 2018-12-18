@@ -100,7 +100,11 @@ public class ShopController {
                if(!path.exists()) {
                    path = new File("");
                }
-               File upload = new File(path.getAbsolutePath(),"static/picture/"+fileDate.getId()+"_"+fileDate.getName());
+               File absolutePath=new File(path.getAbsolutePath()+"/static/picture/");
+               if(!absolutePath.exists()){
+                   absolutePath=new File("");
+               }
+               File upload = new File(absolutePath.getAbsolutePath(),fileDate.getId()+"_"+fileDate.getName());
                if(!upload.exists()){
                    if(!upload.createNewFile()){
                        return ToJsonObject.getSuccessJSONObject(null);
@@ -132,7 +136,11 @@ public class ShopController {
                 if(!path.exists()) {
                     path = new File("");
                 }
-                File upload = new File(path.getAbsolutePath(),"static/excel/"+fileDate.getId()+"_"+fileDate.getName());
+                File absolutePath=new File(path.getAbsolutePath()+"/static/excel/");
+                if(!absolutePath.exists()){
+                    absolutePath=new File("");
+                }
+                File upload = new File(absolutePath.getAbsolutePath(),fileDate.getId()+"_"+fileDate.getName());
                 if(!upload.exists()){
                     if(!upload.createNewFile()){
                         return ToJsonObject.getSuccessJSONObject(null);
