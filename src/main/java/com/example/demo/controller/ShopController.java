@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Shop;
+import com.example.demo.entity.exEntity.ShopListRec;
 import com.example.demo.entity.exEntity.ShopRec;
 import com.example.demo.entity.exEntity.UploadFile;
+import com.example.demo.enums.CategoryEnum;
 import com.example.demo.mapper.RegionMapper;
 import com.example.demo.mapper.ShopMapper;
+import com.example.demo.util.Help;
 import com.example.demo.util.ToJsonObject;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 public class ShopController {
@@ -63,21 +69,6 @@ public class ShopController {
             }
         }
         return ToJsonObject.getFailJSONObject2(null,message);
-    }
-
-    /**
-     * 获取地址名字
-     * @param list
-     * @return
-     */
-    private String getName(String[] list){
-        if(list.length==3){
-            return regionMapper.getProName(list[0])+
-                    regionMapper.getCityName(list[1])+
-                    regionMapper.getAreaName(list[2]);
-        }else {
-            return "";
-        }
     }
 
     /**
@@ -146,5 +137,37 @@ public class ShopController {
             }
         }
         return ToJsonObject.getSuccessJSONObject(null);
+    }
+
+    @GetMapping("/shopList")
+    @ResponseBody
+    JSONObject shopList(){
+        List<Shop> list=shopMapper.getAllShop();
+        if(Objects.nonNull(list)){
+            List<ShopListRec> shopList=list.stream().map(x->{
+                ShopListRec shopRec=new ShopListRec();
+                BeanUtils.copyProperties(x,shopRec);
+                shopRec.setCTime(Help.timeFormat(x.getCTime()));
+                shopRec.setETime(Help.timeFormat(x.getETime()));
+                shopRec.setCategory(CategoryEnum.CategoryName(x.getCategory()));
+                return shopRec;
+            }).collect(Collectors.toList());
+            return ToJsonObject.getSuccessJSONObject(shopList);
+        }
+        return ToJsonObject.getFailJSONObject(null);
+    }
+    /**
+     * 获取地址名字
+     * @param list
+     * @return
+     */
+    private String getName(String[] list){
+        if(list.length==3){
+            return regionMapper.getProName(list[0])+
+                    regionMapper.getCityName(list[1])+
+                    regionMapper.getAreaName(list[2]);
+        }else {
+            return "";
+        }
     }
 }

@@ -4,6 +4,10 @@ import lombok.Data;
 
 @Data
 public class User {
-    private int userId;
-    private int account;
+    private Integer userId;
+    private String userName;
+    private String password;
+    private Integer isAdmin;
+    private Integer isAudit;
+    private Integer valid;
 }

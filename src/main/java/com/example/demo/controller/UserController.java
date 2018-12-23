@@ -25,8 +25,11 @@ public class UserController {
     JSONObject test(@Param("userName") String userName){
         User user=new User();
         user.setUserId(1);
-        user.setAccount(2);
-//        userMapper.addUser(user);
+        user.setUserName("刘家树");
+        user.setIsAdmin(1);
+        user.setIsAudit(1);
+        user.setValid(1);
+        userMapper.addUser(user);
         System.out.println(userName);
         return ToJsonObject.getSuccessJSONObject(user);
     }

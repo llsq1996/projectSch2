@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @MapperScan("com.example.demo.mapper")
@@ -17,10 +20,7 @@ public class ProjectBootApplicationTests {
     private UserMapper userMapper;
     @Test
     public void contextLoads() {
-        User user=new User();
-        user.setUserId(1);
-        user.setAccount(2);
-        userMapper.addUser(user);
+
 }
 
 }

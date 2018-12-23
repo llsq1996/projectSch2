@@ -37,6 +37,7 @@
     <select id="getAllShop" resultMap="BaseResultMap">
         select * from
         <include refid="Base_Name"/>
+        where valid=1
     </select>
     <update id="updateAddress">
         update
