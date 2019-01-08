@@ -39,6 +39,13 @@ public class ToJsonObject {
         jsonObject.put("code",1);
         return jsonObject;
     }
+    static public JSONObject getSuccessJSONObject(){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("data",null);
+        jsonObject.put("msg","success");
+        jsonObject.put("code",1);
+        return jsonObject;
+    }
     static public JSONObject getFailJSONObject(Object ob){
         JSONObject jsonObject=new JSONObject();
         if(Objects.nonNull(ob)){
