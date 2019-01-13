@@ -9,6 +9,7 @@
         <result column="leader_phone" property="leaderPhone" jdbcType="VARCHAR"/>
         <result column="cus_phone" property="cusPhone" jdbcType="VARCHAR"/>
         <result column="category" property="category" jdbcType="INTEGER"/>
+        <result column="delivery" property="delivery" jdbcType="INTEGER"/>
         <result column="pic_address" property="picAddress" jdbcType="VARCHAR"/>
         <result column="valid" property="valid" jdbcType="INTEGER"/>
         <result column="is_tradeMark" property="isTradeMark" jdbcType="INTEGER"/>
@@ -18,11 +19,11 @@
 
 
     <sql id="Base_Column_List">
-    id,sp_name,address,leader,leader_phone,cus_phone,category,
+    id,sp_name,address,leader,leader_phone,cus_phone,category,delivery,
     pic_address,valid,is_tradeMark,c_time,e_time
     </sql>
     <sql id="Base_Column_List_NoId">
-    sp_name,address,leader,leader_phone,cus_phone,category,
+    sp_name,address,leader,leader_phone,cus_phone,category,delivery,
     pic_address,valid,is_tradeMark,c_time,e_time
     </sql>
     <sql id="Base_Name">
@@ -31,7 +32,7 @@
     <insert id="shopAdd" parameterType="com.example.demo.entity.Shop" useGeneratedKeys="true" keyProperty="shop.id" >
         insert into<include refid="Base_Name"/>(<include refid="Base_Column_List_NoId"/>)
         values (#{shop.spName},#{shop.address},#{shop.leader},#{shop.leaderPhone},
-        #{shop.cusPhone},#{shop.category},#{shop.picAddress},1,
+        #{shop.cusPhone},#{shop.category},#{shop.delivery},#{shop.picAddress},1,
         #{shop.isTradeMark},current_timestamp() ,current_timestamp())
     </insert>
     <select id="getAllShop" resultMap="BaseResultMap">

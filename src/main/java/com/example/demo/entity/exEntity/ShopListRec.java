@@ -11,6 +11,7 @@ public class ShopListRec {
     private String leaderPhone;
     private String cusPhone;
     private String category;
+    private String delivery;
     private String picAddress;
     private Integer isTradeMark;
     private String cTime;

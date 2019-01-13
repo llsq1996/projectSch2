@@ -5,6 +5,7 @@ import com.example.demo.entity.exEntity.ShopListRec;
 import com.example.demo.entity.exEntity.ShopRec;
 import com.example.demo.entity.exEntity.UploadFile;
 import com.example.demo.enums.CategoryEnum;
+import com.example.demo.enums.DeliveryEnum;
 import com.example.demo.mapper.RegionMapper;
 import com.example.demo.mapper.ShopMapper;
 import com.example.demo.util.Help;
@@ -158,6 +159,7 @@ public class ShopController {
                 shopRec.setCTime(Help.timeFormat(x.getCTime()));
                 shopRec.setETime(Help.timeFormat(x.getETime()));
                 shopRec.setCategory(CategoryEnum.CategoryName(x.getCategory()));
+                shopRec.setDelivery(DeliveryEnum.DeliveryName(x.getDelivery()));
                 return shopRec;
             }).collect(Collectors.toList());
             return ToJsonObject.getSuccessJSONObject(shopList);

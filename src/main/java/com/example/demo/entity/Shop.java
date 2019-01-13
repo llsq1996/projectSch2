@@ -12,6 +12,7 @@ public class Shop {
     private String leaderPhone;
     private String cusPhone;
     private Integer category;
+    private Integer delivery;
     private String picAddress;
     private Integer valid;
     private Integer isTradeMark;

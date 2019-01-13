@@ -13,6 +13,7 @@ public class ShopRec {
     private String leaderPhone;
     private String cusPhone;
     private Integer category;
+    private Integer delivery;
     private String picAddress;
     private Integer isTradeMark;
 }
