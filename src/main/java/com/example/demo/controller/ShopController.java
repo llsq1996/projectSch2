@@ -53,13 +53,11 @@ public class ShopController {
 
         Shop shop=new Shop();
         BeanUtils.copyProperties(shopRec,shop);
-        String address=getName(shopRec.getAddressList().split(","));
-        if(StringUtils.isEmpty(address)){
-            isRight=false;
-            message="省市县地址信息不全";
-        }
-        shop.setAddress(address);
+        shop.setAddress(shopRec.getAddressList());
         System.out.println(shop);
+        if(StringUtils.isEmpty(shopRec.getAddressList())){
+            isRight=false;
+        }
         //写入
         if(isRight){
             if(1==shopMapper.shopAdd(shop)){
@@ -148,6 +146,10 @@ public class ShopController {
         return ToJsonObject.getSuccessJSONObject(null);
     }
 
+    /**
+     * 获取商家列表
+     * @return
+     */
     @GetMapping("/shopList")
     @ResponseBody
     JSONObject shopList(){
@@ -166,8 +168,20 @@ public class ShopController {
         }
         return ToJsonObject.getFailJSONObject(null);
     }
+
     /**
-     * 获取地址名字
+     * 获取商家详情信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/shopDetail")
+    @ResponseBody
+    JSONObject shopDetail(@Param("id") Integer id){
+        //to do
+        return ToJsonObject.getFailJSONObject(null);
+    }
+    /**
+     * 根据地址id，获取地址名字
      * @param list
      * @return
      */
