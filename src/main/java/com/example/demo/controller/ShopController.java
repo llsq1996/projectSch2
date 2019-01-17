@@ -194,4 +194,20 @@ public class ShopController {
             return "";
         }
     }
+    /**
+     * 删除商家详情信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/shopDelete")
+    @ResponseBody
+    JSONObject delAll(@Param("id") Integer id){
+        if(id!=null&&(1==shopMapper.delAll(id))){
+        return ToJsonObject.getSuccessJSONObject(null);
+       }
+       else
+           return ToJsonObject.getFailJSONObject(null);
+    }
+
+
 }

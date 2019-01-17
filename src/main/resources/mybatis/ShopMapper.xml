@@ -46,4 +46,10 @@
         set pic_address=#{picName}
         where id=#{id}
     </update>
+    <update id="delAll">
+        update
+        <include refid="Base_Name"/>
+        set valid=0
+        where id=#{id}
+    </update>
 </mapper>
