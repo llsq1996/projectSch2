@@ -202,10 +202,11 @@ public class ShopController {
     @GetMapping("/shopDelete")
     @ResponseBody
     JSONObject delAll(@Param("id") Integer id){
-        if(id!=null&&(1==shopMapper.delAll(id))){
-        return ToJsonObject.getSuccessJSONObject(null);
+        if(Objects.nonNull(id)){
+            if(1==shopMapper.delAll(id)){
+                return ToJsonObject.getSuccessJSONObject(null);
+            }
        }
-       else
            return ToJsonObject.getFailJSONObject(null);
     }
 
