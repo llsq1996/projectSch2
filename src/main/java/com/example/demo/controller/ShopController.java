@@ -54,6 +54,12 @@ public class ShopController {
         Shop shop=new Shop();
         BeanUtils.copyProperties(shopRec,shop);
         shop.setAddress(shopRec.getAddressList());
+        try{
+            shop.setDeliPrice(Double.parseDouble(shopRec.getDeliPrice()));
+            shop.setDispatch(Double.parseDouble(shopRec.getDispatch()));
+        }catch (Exception ex){
+            isRight=false;
+        }
         System.out.println(shop);
         if(StringUtils.isEmpty(shopRec.getAddressList())){
             isRight=false;
@@ -160,6 +166,13 @@ public class ShopController {
                 BeanUtils.copyProperties(x,shopRec);
                 shopRec.setCTime(Help.timeFormat(x.getCTime()));
                 shopRec.setETime(Help.timeFormat(x.getETime()));
+                shopRec.setAddress(getName(x.getAddress().split(",")));
+                if(Objects.nonNull(x.getDeliPrice())){
+                    shopRec.setDeliPrice(x.getDeliPrice().toString());
+                }
+                if(Objects.nonNull(x.getDispatch())){
+                    shopRec.setDispatch(x.getDispatch().toString());
+                }
                 shopRec.setCategory(CategoryEnum.CategoryName(x.getCategory()));
                 shopRec.setDelivery(DeliveryEnum.DeliveryName(x.getDelivery()));
                 return shopRec;

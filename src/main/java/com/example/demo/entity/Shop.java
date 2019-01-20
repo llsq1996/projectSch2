@@ -11,9 +11,12 @@ public class Shop {
     private String leader;
     private String leaderPhone;
     private String cusPhone;
+    private String worker;
     private Integer category;
     private Integer delivery;
     private String picAddress;
+    private Double deliPrice;
+    private Double dispatch;
     private Integer valid;
     private Integer isTradeMark;
     private Timestamp cTime;
