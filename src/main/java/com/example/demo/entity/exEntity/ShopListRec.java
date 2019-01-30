@@ -16,7 +16,7 @@ public class ShopListRec {
     private String picAddress;
     private String deliPrice;
     private String dispatch;
-    private Integer isTradeMark;
+    private String isTradeMark;
     private String cTime;
     private String eTime;
 }

@@ -19,6 +19,7 @@ public class Shop {
     private Double dispatch;
     private Integer valid;
     private Integer isTradeMark;
+    private Integer idTradeMark;
     private Timestamp cTime;
     private Timestamp eTime;
 }

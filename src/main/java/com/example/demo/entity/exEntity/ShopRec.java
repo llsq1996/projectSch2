@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class ShopRec {
+    private Integer id;
     private String spName;
     private String addressList;
     private String leader;

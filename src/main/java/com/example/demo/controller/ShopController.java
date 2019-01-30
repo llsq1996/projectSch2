@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Shop;
+import com.example.demo.entity.TradeMark;
 import com.example.demo.entity.exEntity.ShopListRec;
 import com.example.demo.entity.exEntity.ShopRec;
 import com.example.demo.entity.exEntity.UploadFile;
@@ -8,6 +9,7 @@ import com.example.demo.enums.CategoryEnum;
 import com.example.demo.enums.DeliveryEnum;
 import com.example.demo.mapper.RegionMapper;
 import com.example.demo.mapper.ShopMapper;
+import com.example.demo.mapper.TradeMarkMapper;
 import com.example.demo.util.Help;
 import com.example.demo.util.ToJsonObject;
 import net.sf.json.JSONObject;
@@ -36,6 +38,8 @@ public class ShopController {
     private ShopMapper shopMapper;
     @Autowired
     private RegionMapper regionMapper;
+    @Autowired
+    private TradeMarkMapper tradeMarkMapper;
 
     /**
      * 基本资料录入
@@ -66,6 +70,13 @@ public class ShopController {
         }
         //写入
         if(isRight){
+            if(shop.getIsTradeMark()==1){
+                TradeMark tradeMark=new TradeMark();
+                tradeMark.setTradeMarkName(shop.getSpName());
+                tradeMarkMapper.tradeMarkAdd(tradeMark);
+                System.out.println(tradeMark);
+                shop.setIdTradeMark(tradeMark.getId());
+            }
             if(1==shopMapper.shopAdd(shop)){
                 System.out.println(shop);
                 return ToJsonObject.getSuccessJSONObject(shop.getId());
@@ -164,6 +175,11 @@ public class ShopController {
             List<ShopListRec> shopList=list.stream().map(x->{
                 ShopListRec shopRec=new ShopListRec();
                 BeanUtils.copyProperties(x,shopRec);
+                if(x.getIsTradeMark()==1){
+                    shopRec.setIsTradeMark("是");
+                }else{
+                    shopRec.setIsTradeMark("否");
+                }
                 shopRec.setCTime(Help.timeFormat(x.getCTime()));
                 shopRec.setETime(Help.timeFormat(x.getETime()));
                 shopRec.setAddress(getName(x.getAddress().split(",")));
@@ -191,7 +207,75 @@ public class ShopController {
     @ResponseBody
     JSONObject shopDetail(@Param("id") Integer id){
         //to do
+        Shop shop=shopMapper.getShopById(id);
+        if(Objects.nonNull(shop)){
+            ShopRec shopRec=new ShopRec();
+            BeanUtils.copyProperties(shop,shopRec);
+            shopRec.setAddressList(shop.getAddress());
+            if(Objects.nonNull(shop.getDeliPrice())){
+                shopRec.setDeliPrice(shop.getDeliPrice().toString());
+            }
+            if(Objects.nonNull(shop.getDispatch())){
+                shopRec.setDispatch(shop.getDispatch().toString());
+            }
+            return ToJsonObject.getSuccessJSONObject(shopRec);
+        }
         return ToJsonObject.getFailJSONObject(null);
+    }
+
+    /**
+     * 修改商家详情信息
+     * @param shopRec
+     * @return
+     */
+    @PostMapping("/shopUpdate")
+    @ResponseBody
+    JSONObject shopUpdate(ShopRec shopRec){
+        if(Objects.nonNull(shopRec)){
+            System.out.println(shopRec);
+            //校验数据标志，数据通过可写入则为true
+            Boolean isRight=true;
+            //检验数据未通过原因
+            String message="";
+            Shop shop=new Shop();
+            BeanUtils.copyProperties(shopRec,shop);
+            shop.setAddress(shopRec.getAddressList());
+            try{
+                shop.setDeliPrice(Double.parseDouble(shopRec.getDeliPrice()));
+                shop.setDispatch(Double.parseDouble(shopRec.getDispatch()));
+            }catch (Exception ex){
+                isRight=false;
+            }
+            System.out.println(shop);
+            if(StringUtils.isEmpty(shopRec.getAddressList())){
+                isRight=false;
+            }
+            //写入
+            if(isRight){
+                if(1==shopMapper.shopUpdate(shop)){
+                    System.out.println(shop);
+                    return ToJsonObject.getSuccessJSONObject(null);
+                }else{
+                    message="修改数据失败";
+                }
+            }
+        }
+        return ToJsonObject.getFailJSONObject(null);
+    }
+    /**
+     * 删除商家详情信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/shopDelete")
+    @ResponseBody
+    JSONObject shopDelete(@Param("id") Integer id){
+        if(Objects.nonNull(id)){
+            if(1==shopMapper.delAll(id)){
+                return ToJsonObject.getSuccessJSONObject(null);
+            }
+       }
+           return ToJsonObject.getFailJSONObject(null);
     }
     /**
      * 根据地址id，获取地址名字
@@ -206,21 +290,6 @@ public class ShopController {
         }else {
             return "";
         }
-    }
-    /**
-     * 删除商家详情信息
-     * @param id
-     * @return
-     */
-    @GetMapping("/shopDelete")
-    @ResponseBody
-    JSONObject delAll(@Param("id") Integer id){
-        if(Objects.nonNull(id)){
-            if(1==shopMapper.delAll(id)){
-                return ToJsonObject.getSuccessJSONObject(null);
-            }
-       }
-           return ToJsonObject.getFailJSONObject(null);
     }
 
 

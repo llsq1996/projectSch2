@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.TradeMarkMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.TradeMark">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="trademark_name" property="tradeMarkName" jdbcType="VARCHAR"/>
+        <result column="valid" property="valid" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Name">
+        proj_trademark
+    </sql>
+    <sql id="Base_Column_List">
+     id,trademark_name,valid
+    </sql>
+    <sql id="Base_Column_List_noId">
+     trademark_name,valid
+    </sql>
+    <insert id="tradeMarkAdd" parameterType="com.example.demo.entity.TradeMark" useGeneratedKeys="true" keyProperty="tradeMark.id">
+        insert into<include refid="Base_Name"/>(<include refid="Base_Column_List_noId"/>)
+        values (#{tradeMark.tradeMarkName},1)
+    </insert>
+    <select id="getAll"  resultMap="BaseResultMap">
+        select * from <include refid="Base_Name"/>
+        where  valid=1
+    </select>
+</mapper>

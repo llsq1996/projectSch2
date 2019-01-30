@@ -16,6 +16,7 @@
         <result column="dispatch" property="dispatch" jdbcType="DOUBLE"/>
         <result column="valid" property="valid" jdbcType="INTEGER"/>
         <result column="is_tradeMark" property="isTradeMark" jdbcType="INTEGER"/>
+        <result column="id_tradeMark" property="idTradeMark" jdbcType="INTEGER"/>
         <result column="c_time" property="cTime" jdbcType="TIMESTAMP"/>
         <result column="e_time" property="eTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -23,11 +24,11 @@
 
     <sql id="Base_Column_List">
     id,sp_name,address,leader,leader_phone,cus_phone,worker,category,delivery,
-    pic_address,deliPrice,dispatch,valid,is_tradeMark,c_time,e_time
+    pic_address,deliPrice,dispatch,valid,is_tradeMark,id_tradeMark,c_time,e_time
     </sql>
     <sql id="Base_Column_List_NoId">
     sp_name,address,leader,leader_phone,cus_phone,worker,category,delivery,
-    pic_address,deliPrice,dispatch,valid,is_tradeMark,c_time,e_time
+    pic_address,deliPrice,dispatch,valid,is_tradeMark,id_tradeMark,c_time,e_time
     </sql>
     <sql id="Base_Name">
         proj_shop
@@ -36,13 +37,29 @@
         insert into<include refid="Base_Name"/>(<include refid="Base_Column_List_NoId"/>)
         values (#{shop.spName},#{shop.address},#{shop.leader},#{shop.leaderPhone},
         #{shop.cusPhone},#{shop.worker},#{shop.category},#{shop.delivery},#{shop.picAddress}
-        ,#{shop.deliPrice},#{shop.dispatch},1,#{shop.isTradeMark},current_timestamp() ,current_timestamp())
+        ,#{shop.deliPrice},#{shop.dispatch},1,#{shop.isTradeMark},#{shop.idTradeMark},current_timestamp() ,current_timestamp())
     </insert>
     <select id="getAllShop" resultMap="BaseResultMap">
         select * from
         <include refid="Base_Name"/>
         where valid=1
     </select>
+    <select id="getShopById" resultMap="BaseResultMap">
+        select * from
+        <include refid="Base_Name"/>
+        where id=#{id}
+        and valid=1
+    </select>
+    <update id="shopUpdate">
+        update
+        <include refid="Base_Name"/>
+        set sp_name=#{shop.spName},address=#{shop.address},leader=#{shop.leader},
+        leader_phone=#{shop.leaderPhone},cus_phone=#{shop.cusPhone},category=#{shop.category},
+        delivery=#{shop.delivery},deliPrice=#{shop.deliPrice},dispatch=#{shop.dispatch},
+        is_tradeMark=#{shop.isTradeMark},e_time=current_timestamp()
+        where id=#{shop.id}
+        and valid=1
+    </update>
     <update id="updateAddress">
         update
         <include refid="Base_Name"/>
