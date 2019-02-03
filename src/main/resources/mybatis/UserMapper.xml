@@ -28,4 +28,25 @@
         and password=#{user.password}
         and valid=1
     </select>
+    <select id="getUserById"  parameterType="com.example.demo.entity.User" resultMap="BaseResultMap">
+        select * from <include refid="Base_Name"/>
+        where userid=#{user.userId}
+        and valid=1
+    </select>
+    <select id="getAll" resultMap="BaseResultMap">
+        select * from <include refid="Base_Name"/>
+        where valid=1
+    </select>
+    <update id="updateUser" >
+        update <include refid="Base_Name"/>
+        set username=#{user.userName},password=#{user.password},is_admin=#{user.isAdmin},
+        is_audit=#{user.isAudit}
+        where userid=#{user.userId}
+        and valid=1
+    </update>
+    <update id="deleteUser" >
+        update <include refid="Base_Name"/>
+        set valid=0
+        where userid=#{userId}
+    </update>
 </mapper>

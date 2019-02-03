@@ -277,6 +277,11 @@ public class ShopController {
        }
            return ToJsonObject.getFailJSONObject(null);
     }
+    @GetMapping("/tradeMarkGet")
+    @ResponseBody
+    JSONObject tradeMarkGet(){
+        return ToJsonObject.getSuccessJSONObject(tradeMarkMapper.getAll());
+    }
     /**
      * 根据地址id，获取地址名字
      * @param list
