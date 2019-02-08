@@ -86,6 +86,12 @@ public class ShopController {
         }
         return ToJsonObject.getFailJSONObject2(null,message);
     }
+    @GetMapping("/tradeShop")
+    @ResponseBody
+    JSONObject tradeShop(){
+        List<TradeMark> list=tradeMarkMapper.getAll();
+        return ToJsonObject.getSuccessJSONObject(list);
+    }
 
     /**
      * 图片上传
