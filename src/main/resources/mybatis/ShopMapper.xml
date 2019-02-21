@@ -43,6 +43,13 @@
         select * from
         <include refid="Base_Name"/>
         where valid=1
+        order by c_time desc
+    </select>
+    <select id="getLast" resultMap="BaseResultMap">
+        select * from
+        <include refid="Base_Name"/>
+        where valid=1
+        order by c_time asc limit 1
     </select>
     <select id="getShopById" resultMap="BaseResultMap">
         select * from

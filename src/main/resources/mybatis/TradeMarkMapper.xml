@@ -23,4 +23,9 @@
         select * from <include refid="Base_Name"/>
         where  valid=1
     </select>
+    <select id="getById"  resultMap="BaseResultMap">
+        select * from <include refid="Base_Name"/>
+        where id=#{id}
+        and valid=1
+    </select>
 </mapper>

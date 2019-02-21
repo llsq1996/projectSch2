@@ -11,4 +11,5 @@ import java.util.List;
 public interface TradeMarkMapper {
     int tradeMarkAdd(@Param("tradeMark") TradeMark tradeMark);
     List<TradeMark> getAll();
+    TradeMark getById(@Param("id") Integer id);
 }

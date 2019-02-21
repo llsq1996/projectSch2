@@ -4,7 +4,6 @@ import com.example.demo.entity.Shop;
 import com.example.demo.entity.TradeMark;
 import com.example.demo.entity.exEntity.ShopListRec;
 import com.example.demo.entity.exEntity.ShopRec;
-import com.example.demo.entity.exEntity.UploadFile;
 import com.example.demo.enums.CategoryEnum;
 import com.example.demo.enums.DeliveryEnum;
 import com.example.demo.mapper.RegionMapper;
@@ -17,17 +16,11 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -86,87 +79,16 @@ public class ShopController {
         }
         return ToJsonObject.getFailJSONObject2(null,message);
     }
+
+    /**
+     * 获取品牌商家列表
+     * @return
+     */
     @GetMapping("/tradeShop")
     @ResponseBody
     JSONObject tradeShop(){
         List<TradeMark> list=tradeMarkMapper.getAll();
         return ToJsonObject.getSuccessJSONObject(list);
-    }
-
-    /**
-     * 图片上传
-     * @param file
-     * @param fileDate
-     * @return
-     */
-    @RequestMapping("/pic")
-    @ResponseBody
-    JSONObject picture(@Param("file") MultipartFile file, UploadFile fileDate) {
-        System.out.println(fileDate);
-       if(Objects.nonNull(file)){
-           if(StringUtils.isEmpty(fileDate.getName())){
-               fileDate.setName("0_example.jpg");
-           }
-           try{
-               byte bs[]=file.getBytes();
-               File path = new File(ResourceUtils.getURL("classpath:").getPath());
-               if(!path.exists()) {
-                   path = new File("");
-               }
-               File absolutePath=new File(path.getAbsolutePath()+"/static/picture/");
-               if(!absolutePath.exists()){
-                   absolutePath=new File("");
-               }
-               File upload = new File(absolutePath.getAbsolutePath(),fileDate.getId()+"_"+fileDate.getName());
-               if(!upload.exists()){
-                   if(!upload.createNewFile()){
-                       return ToJsonObject.getSuccessJSONObject(null);
-                   }
-               }
-               FileOutputStream outputStream=new FileOutputStream(upload);
-               outputStream.write(bs);
-               outputStream.close();
-           }catch (IOException io){
-               System.out.println(io);
-           }
-       }
-        return ToJsonObject.getSuccessJSONObject(null);
-    }
-
-    /**
-     * excel文件上传
-     * @param file
-     * @param fileDate
-     * @return
-     */
-    @RequestMapping("/excel")
-    @ResponseBody
-    JSONObject excel(@Param("file") MultipartFile file, UploadFile fileDate){
-        if(Objects.nonNull(file)){
-            try{
-                byte bs[]=file.getBytes();
-                File path = new File(ResourceUtils.getURL("classpath:").getPath());
-                if(!path.exists()) {
-                    path = new File("");
-                }
-                File absolutePath=new File(path.getAbsolutePath()+"/static/excel/");
-                if(!absolutePath.exists()){
-                    absolutePath=new File("");
-                }
-                File upload = new File(absolutePath.getAbsolutePath(),fileDate.getId()+"_"+fileDate.getName());
-                if(!upload.exists()){
-                    if(!upload.createNewFile()){
-                        return ToJsonObject.getSuccessJSONObject(null);
-                    }
-                }
-                FileOutputStream outputStream=new FileOutputStream(upload);
-                outputStream.write(bs);
-                outputStream.close();
-            }catch (IOException io){
-                System.out.println(io);
-            }
-        }
-        return ToJsonObject.getSuccessJSONObject(null);
     }
 
     /**

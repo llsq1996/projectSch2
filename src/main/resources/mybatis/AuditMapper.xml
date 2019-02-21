@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.AuditMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.Audit">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="submitter" property="submitter" jdbcType="VARCHAR"/>
+        <result column="auditor" property="auditor" jdbcType="VARCHAR"/>
+        <result column="id_trademark" property="idTradeMark" jdbcType="INTEGER"/>
+        <result column="c_time" property="cTime" jdbcType="TIMESTAMP"/>
+        <result column="e_time" property="eTime" jdbcType="TIMESTAMP"/>
+        <result column="result" property="result" jdbcType="INTEGER"/>
+        <result column="valid" property="valid" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+    id,name,submitter,auditor,id_trademark,c_time,e_time,result,valid
+    </sql>
+    <sql id="Base_Column_List_NoId">
+   name,submitter,auditor,id_trademark,c_time,e_time,result,valid
+    </sql>
+    <sql id="Base_Name">
+        proj_audit
+    </sql>
+    <insert id="shopAdd" parameterType="com.example.demo.entity.Audit" useGeneratedKeys="true" keyProperty="shop.id" >
+        insert into<include refid="Base_Name"/>(<include refid="Base_Column_List_NoId"/>)
+        values (#{shop.name},#{shop.submitter},#{shop.auditor},#{shop.idTradeMark},
+        current_timestamp() ,current_timestamp(),0,1)
+    </insert>
+    <select id="getAllShop" resultMap="BaseResultMap">
+        select * from
+        <include refid="Base_Name"/>
+        where valid=1
+        and result=0
+        order by c_time
+    </select>
+    <select id="getAllAuditShop" resultMap="BaseResultMap">
+        select * from
+        <include refid="Base_Name"/>
+        where valid=1
+        and result=1
+        order by c_time
+    </select>
+    <select id="getById" resultMap="BaseResultMap">
+        select * from
+        <include refid="Base_Name"/>
+        where id=#{id}
+        and result=0
+        and valid=1
+    </select>
+    <update id="updateStatus" >
+        update <include refid="Base_Name"/>
+        set result=1
+        where id=#{id}
+        and valid=1
+    </update>
+</mapper>

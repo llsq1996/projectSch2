@@ -18,12 +18,23 @@ import java.util.List;
 public class RegionController {
     @Autowired
     private RegionMapper regionMapper;
+
+    /**
+     * 获取省份
+     * @return
+     */
     @GetMapping("/getProvince")
     @ResponseBody
     JSONObject getProvince() {
        List<Provinces>list=regionMapper.getProvince();
             return ToJsonObject.getSuccessJSONObject(list);
     }
+
+    /**
+     * 获取城市
+     * @param provinceId
+     * @return
+     */
     @GetMapping("/getCity")
     @ResponseBody
     JSONObject getCity(@Param("provinceId") String provinceId) {
@@ -31,6 +42,12 @@ public class RegionController {
         return ToJsonObject.getSuccessJSONObject(list);
 
     }
+
+    /**
+     * 获取地区
+     * @param cityId
+     * @return
+     */
     @GetMapping("/getArea")
     @ResponseBody
     JSONObject getArea(@Param("cityId") String cityId) {

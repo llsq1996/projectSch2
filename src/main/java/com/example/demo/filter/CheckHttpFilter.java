@@ -26,7 +26,7 @@ public class CheckHttpFilter implements Filter {
         response.setHeader("Access-Control-Allow-Headers","token,Origin, X-Requested-With, Content-Type, Accept");
 
         response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json;application/x-www-form-urlencoded; charset=utf-8");
+        response.setContentType("application/json;application/x-www-form-urlencoded;application/vnd.ms-excel; charset=utf-8");
 
         if (request.getMethod().equals(RequestMethod.OPTIONS.toString())) {
             response.setStatus(HttpServletResponse.SC_OK);

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class UploadFile {
-    String name;
-    Integer id;
+   private String name;
+   private Integer id;
+   private String user;
 }
