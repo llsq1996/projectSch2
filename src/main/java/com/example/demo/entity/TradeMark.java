@@ -6,5 +6,6 @@ import lombok.Data;
 public class TradeMark {
     private Integer id;
     private String tradeMarkName;
+    private Integer shopId;
     private Integer valid;
 }

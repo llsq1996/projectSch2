@@ -72,6 +72,9 @@ public class ShopController {
             }
             if(1==shopMapper.shopAdd(shop)){
                 System.out.println(shop);
+                if(shop.getIsTradeMark()==1){
+                   tradeMarkMapper.updateShopId(shop.getIdTradeMark(),shop.getId());
+                }
                 return ToJsonObject.getSuccessJSONObject(shop.getId());
             }else{
                message="写入数据失败";

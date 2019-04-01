@@ -4,16 +4,17 @@
     <resultMap id="BaseResultMap" type="com.example.demo.entity.TradeMark">
         <result column="id" property="id" jdbcType="INTEGER"/>
         <result column="trademark_name" property="tradeMarkName" jdbcType="VARCHAR"/>
+        <result column="shop_id" property="shopId" jdbcType="INTEGER"/>
         <result column="valid" property="valid" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Name">
         proj_trademark
     </sql>
     <sql id="Base_Column_List">
-     id,trademark_name,valid
+     id,trademark_name,shop_id,valid
     </sql>
     <sql id="Base_Column_List_noId">
-     trademark_name,valid
+     trademark_name,shop_id,valid
     </sql>
     <insert id="tradeMarkAdd" parameterType="com.example.demo.entity.TradeMark" useGeneratedKeys="true" keyProperty="tradeMark.id">
         insert into<include refid="Base_Name"/>(<include refid="Base_Column_List_noId"/>)
@@ -28,4 +29,10 @@
         where id=#{id}
         and valid=1
     </select>
+    <update id="updateShopId">
+        update <include refid="Base_Name"/>
+        set shop_id=#{shopId}
+        where id=#{id}
+        and valid=1
+    </update>
 </mapper>

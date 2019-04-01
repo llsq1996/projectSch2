@@ -17,6 +17,14 @@ public enum DeliveryEnum {
         }
         return "";
    }
+    public static DeliveryEnum DeliveryByName(String name){
+        for(DeliveryEnum ob :DeliveryEnum.values() ){
+            if(ob.getName().equals(name)){
+                return ob;
+            }
+        }
+        return null;
+    }
     public String getName() {
         return name;
     }

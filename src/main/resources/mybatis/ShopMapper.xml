@@ -43,7 +43,7 @@
         select * from
         <include refid="Base_Name"/>
         where valid=1
-        order by c_time desc
+        order by c_time asc
     </select>
     <select id="getLast" resultMap="BaseResultMap">
         select * from

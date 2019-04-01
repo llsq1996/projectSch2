@@ -17,6 +17,14 @@ public enum CategoryEnum {
         }
         return "";
    }
+    public static CategoryEnum CategoryByName(String name){
+        for(CategoryEnum ob :CategoryEnum.values() ){
+            if(ob.getName().equals(name)){
+                return ob;
+            }
+        }
+        return null;
+    }
     public String getName() {
         return name;
     }

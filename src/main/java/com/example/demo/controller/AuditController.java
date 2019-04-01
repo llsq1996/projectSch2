@@ -15,10 +15,7 @@ import com.example.demo.util.ToJsonObject;
 import com.google.common.collect.Lists;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.annotations.Param;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +25,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
@@ -205,7 +200,6 @@ public class AuditController {
         if(excelToList(list,path)){
             for(Map<String,String>map:list){
                 if(shopAdd(map,audit)){
-
                     right++;
                 }else{
                     wrong++;
@@ -233,6 +227,12 @@ public class AuditController {
     JSONObject download(@Param("id") Integer id){
         Audit audit=auditMapper.getById(id);
         String path=audit.getIdTradeMark()+"_"+audit.getName();
+        List<Map<String,String>>list=Lists.newArrayList();
+        excelToList(list,path);
+        Workbook workbook=new XSSFWorkbook();
+        Sheet sheet=workbook.createSheet();
+        Cell cell=sheet.createRow(0);
+
         try {
             File resourcePath = new File("");
             File excel = new File(resourcePath.getAbsolutePath() + "/static/excel/", path);
@@ -254,11 +254,14 @@ public class AuditController {
      * @return
      */
     private boolean shopAdd(Map<String,String> map,Audit audit){
+        System.out.println("shopAdd----------");
         Shop shop=new Shop();
         String category=map.get("类别");
         if(!StringUtils.isEmpty(category)){
-            CategoryEnum categoryEnum=CategoryEnum.valueOf(category);
-            shop.setCategory(categoryEnum.getIndex());
+            CategoryEnum categoryEnum=CategoryEnum.CategoryByName(category);
+            if(Objects.nonNull(categoryEnum)){
+                shop.setCategory(categoryEnum.getIndex());
+            }
         }
         String spName=map.get("商家名称");
         if(!StringUtils.isEmpty(spName)){
@@ -266,8 +269,10 @@ public class AuditController {
         }
         String delivery=map.get("配送方式");
         if(!StringUtils.isEmpty(delivery)){
-            DeliveryEnum deliveryEnum=DeliveryEnum.valueOf(delivery);
-            shop.setDelivery(deliveryEnum.getIndex());
+            DeliveryEnum deliveryEnum=DeliveryEnum.DeliveryByName(delivery);
+            if(Objects.nonNull(deliveryEnum)){
+                shop.setDelivery(deliveryEnum.getIndex());
+            }
         }
         String leader=map.get("商家负责人");
         if(!StringUtils.isEmpty(leader)){
@@ -296,6 +301,9 @@ public class AuditController {
         Integer idTradeMark=audit.getIdTradeMark();
         shop.setIdTradeMark(idTradeMark);
         shop.setIsTradeMark(1);
+        TradeMark tradeMark=tradeMarkMapper.getById(audit.getIdTradeMark());
+        Shop shop2=shopMapper.getShopById(tradeMark.getShopId());
+        shop.setAddress(shop2.getAddress());
         return 1==shopMapper.shopAdd(shop);
     }
 
@@ -321,7 +329,9 @@ public class AuditController {
             int colNum=row.getPhysicalNumberOfCells();
             List<String> head=Lists.newArrayList();
             for(int i=0;i<colNum;i++){
-                head.add(row.getCell(i).getStringCellValue());
+                Cell cell=row.getCell(i);
+                cell.setCellType(CellType.STRING);
+                head.add(cell.getStringCellValue());
             }
             //存到list中
             for(int i=1;i<rowNum;i++){
@@ -330,6 +340,7 @@ public class AuditController {
                 for(int j=0;j<colNum;j++){
                     Cell cell=row.getCell(j);
                     if(Objects.nonNull(cell)){
+                        cell.setCellType(CellType.STRING);
                         map.put(head.get(j),cell.getStringCellValue());
                     }
                 }

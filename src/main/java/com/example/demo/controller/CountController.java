@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Shop;
-import com.example.demo.entity.User;
 import com.example.demo.entity.exEntity.Count;
 import com.example.demo.entity.exEntity.ShopListRec;
 import com.example.demo.enums.CategoryEnum;
@@ -13,17 +12,17 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.util.Help;
 import com.example.demo.util.ToJsonObject;
 import com.google.common.collect.Lists;
-import freemarker.ext.beans.HashAdapter;
 import net.sf.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller

@@ -12,4 +12,5 @@ public interface TradeMarkMapper {
     int tradeMarkAdd(@Param("tradeMark") TradeMark tradeMark);
     List<TradeMark> getAll();
     TradeMark getById(@Param("id") Integer id);
+    int updateShopId(@Param("id") Integer id,@Param("shopId") Integer shopId);
 }
