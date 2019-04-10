@@ -1,12 +1,26 @@
 package com.example.demo.util;
 
+import com.google.common.collect.Lists;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Help {
 
+    public static List<String> list= Lists.newArrayList();
+    static {
+        list.add("类别");
+        list.add("配送方式");
+        list.add("商家名称");
+        list.add("商家负责人");
+        list.add("联系电话");
+        list.add("客服电话");
+        list.add("起送价");
+        list.add("配送费");
+    }
     /**
      * 格式化时间
      * @param time

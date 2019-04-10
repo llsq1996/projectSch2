@@ -15,7 +15,11 @@ import com.example.demo.util.ToJsonObject;
 import com.google.common.collect.Lists;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.annotations.Param;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +29,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.sql.Timestamp;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -172,8 +177,8 @@ public class AuditController {
                 audit.setETime(Help.timeFormat(x.getETime()));
                 TradeMark tradeMark=tradeMarkMapper.getById(x.getIdTradeMark());
                 audit.setTradeMarkName(tradeMark.getTradeMarkName());
-                if(x.getResult()==0){
-                    audit.setResult("待审核");
+                if(x.getResult()==1){
+                    audit.setResult("已审核");
                 }
                 return audit;
             }else{
@@ -207,7 +212,7 @@ public class AuditController {
             }
             //没有错误，审核通过
             if(wrong==0){
-               auditMapper.updateStatus(audit.getId());
+                auditMapper.updateStatus(audit.getId());
                 return ToJsonObject.getSuccessJSONObject(null);
             }else{
                 return ToJsonObject.getFailJSONObject2(null,"审核失败，通过"+right+"条记录，"+wrong+"未通过");
@@ -224,27 +229,32 @@ public class AuditController {
      */
     @GetMapping(value = "/download")
     @ResponseBody
-    JSONObject download(@Param("id") Integer id){
-        Audit audit=auditMapper.getById(id);
+    JSONObject download(@Param("id") Integer id, HttpServletRequest request, HttpServletResponse response){
+        Audit audit=auditMapper.getByIdAll(id);
         String path=audit.getIdTradeMark()+"_"+audit.getName();
+        String time=Help.timeFormat(new Timestamp(new Date().getTime()));
+        String fileName =  audit.getName().split("\\.")[0];
         List<Map<String,String>>list=Lists.newArrayList();
+        //读服务器excel到list
         excelToList(list,path);
-        Workbook workbook=new XSSFWorkbook();
-        Sheet sheet=workbook.createSheet();
-        Cell cell=sheet.createRow(0);
-
+        XSSFWorkbook workbook = listToExcel(list);
+        OutputStream os =  null;
         try {
-            File resourcePath = new File("");
-            File excel = new File(resourcePath.getAbsolutePath() + "/static/excel/", path);
-            InputStream io =new BufferedInputStream(new FileInputStream(excel));
-            byte[] buffer = new byte[io.available()];
-            io.read(buffer);
-            io.close();
-            return ToJsonObject.getSuccessJSONObject(buffer);
+            // 取得输出流
+            os = response.getOutputStream();
+            response.reset();// 清空输出流
+            // 设定输出文件头
+            response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes("UTF-8"), "ISO8859-1") +time+ ".xls");
+            // 定义输出类型
+            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+            workbook.write(os);
+            os.flush();
+            os.close();
         }catch (Exception ex){
             System.out.println(ex);
-            return ToJsonObject.getFailJSONObject(null);
+            return ToJsonObject.getFailJSONObject2(null,"ex");
         }
+        return ToJsonObject.getSuccessJSONObject();
     }
 
     /**
@@ -354,12 +364,40 @@ public class AuditController {
     }
 
     /**
+     * 读取list内容到excel
+     * @param list
+     * @return
+     */
+    private XSSFWorkbook listToExcel(List<Map<String,String>> list){
+        XSSFWorkbook workbook=new XSSFWorkbook();
+        XSSFSheet sheet;
+        XSSFRow row;
+        XSSFCell cell;
+        // 建立excel文件
+        sheet=workbook.createSheet();
+        row=sheet.createRow(0);
+        for(int i=0;i<Help.list.size();i++){
+            cell=row.createCell(i);
+            cell.setCellValue(Help.list.get(i));
+        }
+        int j=1;
+        for(Map<String,String>map:list){
+            row=sheet.createRow(j);
+            for(int i=0;i<Help.list.size();i++){
+                cell=row.createCell(i);
+                cell.setCellValue(map.get(Help.list.get(i)));
+            }
+        }
+        return workbook;
+    }
+
+    /**
      * 存储上传的excel
      * @param file
      * @param fileDate
      * @return
      */
-   private Boolean saveExcel(MultipartFile file, UploadFile fileDate){
+    private Boolean saveExcel(MultipartFile file, UploadFile fileDate){
         try{
             byte bs[]=file.getBytes();
             File path = new File("");

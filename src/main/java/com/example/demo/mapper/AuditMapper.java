@@ -14,5 +14,6 @@ public interface AuditMapper {
     List<Audit> getAllShop();
     List<Audit> getAllAuditShop();
     Audit getById(@Param("id") Integer id);
+    Audit getByIdAll(@Param("id") Integer id);
     int updateStatus(@Param("id") Integer id);
 }

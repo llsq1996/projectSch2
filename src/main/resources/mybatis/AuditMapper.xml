@@ -49,6 +49,12 @@
         and result=0
         and valid=1
     </select>
+    <select id="getByIdAll" resultMap="BaseResultMap">
+        select * from
+        <include refid="Base_Name"/>
+        where id=#{id}
+        and valid=1
+    </select>
     <update id="updateStatus" >
         update <include refid="Base_Name"/>
         set result=1
