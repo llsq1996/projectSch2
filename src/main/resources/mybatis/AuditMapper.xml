@@ -61,4 +61,10 @@
         where id=#{id}
         and valid=1
     </update>
+    <update id="updateUser" >
+        update <include refid="Base_Name"/>
+        set auditor=#{name}
+        where id=#{id}
+        and valid=1
+    </update>
 </mapper>

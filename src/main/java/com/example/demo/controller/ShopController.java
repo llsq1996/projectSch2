@@ -100,8 +100,16 @@ public class ShopController {
      */
     @GetMapping("/shopList")
     @ResponseBody
-    JSONObject shopList(){
-        List<Shop> list=shopMapper.getAllShop();
+    JSONObject shopList(@Param("key") Integer key){
+        List<Shop> list=null;
+        if(key==1){
+            list=shopMapper.getAllTruShop();
+        }else if(key==2){
+            list=shopMapper.getFasShop();
+            list.addAll(shopMapper.getDelShop());
+        }else {
+            list=shopMapper.getTruShop();
+        }
         if(Objects.nonNull(list)){
             List<ShopListRec> shopList=list.stream().map(x->{
                 ShopListRec shopRec=new ShopListRec();

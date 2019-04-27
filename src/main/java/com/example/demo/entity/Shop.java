@@ -17,6 +17,7 @@ public class Shop {
     private String picAddress;
     private Double deliPrice;
     private Double dispatch;
+    private Integer result;
     private Integer valid;
     private Integer isTradeMark;
     private Integer idTradeMark;

@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.stream.FileImageInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -75,6 +76,7 @@ public class AuditController {
                 FileOutputStream outputStream=new FileOutputStream(upload);
                 outputStream.write(bs);
                 outputStream.close();
+                shopMapper.updateAddress(fileDate.getId(),fileDate.getName());
             }catch (IOException io){
                 System.out.println(io);
             }
@@ -195,8 +197,9 @@ public class AuditController {
      */
     @GetMapping("/auditExcel")
     @ResponseBody
-    JSONObject auditExcel(@Param("id") Integer id){
+    JSONObject auditExcel(@Param("id") Integer id,@Param("name") String name){
         Audit audit=auditMapper.getById(id);
+        auditMapper.updateUser(id,name);
         String path=audit.getIdTradeMark()+"_"+audit.getName();
         List<Map<String,String>>list=Lists.newArrayList();
         int right=0;
@@ -215,10 +218,36 @@ public class AuditController {
                 auditMapper.updateStatus(audit.getId());
                 return ToJsonObject.getSuccessJSONObject(null);
             }else{
+                auditMapper.updateStatus(audit.getId());
                 return ToJsonObject.getFailJSONObject2(null,"审核失败，通过"+right+"条记录，"+wrong+"未通过");
             }
         }else{
             return ToJsonObject.getFailJSONObject(null);
+        }
+    }
+
+    /**
+     * 商家资质审核
+     * @param id
+     * @return
+     */
+    @GetMapping("/auditPic")
+    @ResponseBody
+    JSONObject auditPic(@Param("id") Integer id){
+       Shop shop=shopMapper.getShopById(id);
+       String picName=shop.getPicAddress();
+        System.out.println(picName);
+        if(Objects.nonNull(picName)){
+            if(picName.contains("资质")){
+                shopMapper.updateResult(id,1);
+                return ToJsonObject.getSuccessJSONObject(null);
+            }else{
+                shopMapper.updateResult(id,2);
+                return ToJsonObject.getFailJSONObject2(null,"资质图片不符");
+            }
+        }else{
+            shopMapper.updateResult(id,2);
+            return ToJsonObject.getFailJSONObject2(null,"资质图片不存在");
         }
     }
 
@@ -248,6 +277,43 @@ public class AuditController {
             // 定义输出类型
             response.setContentType("application/vnd.ms-excel;charset=UTF-8");
             workbook.write(os);
+            os.flush();
+            os.close();
+        }catch (Exception ex){
+            System.out.println(ex);
+            return ToJsonObject.getFailJSONObject2(null,"ex");
+        }
+        return ToJsonObject.getSuccessJSONObject();
+    }
+    /**
+     * 图片下载
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/downloadPic")
+    @ResponseBody
+    JSONObject downloadPic(@Param("id") Integer id, HttpServletRequest request, HttpServletResponse response){
+        Shop shop=shopMapper.getShopById(id);
+        String path=shop.getId()+"_"+shop.getPicAddress();
+        String time=Help.timeFormat(new Timestamp(new Date().getTime()));
+        String fileName =  shop.getPicAddress().split("\\.")[0];
+        OutputStream os =  null;
+        try {
+            // 取得输出流
+            os = response.getOutputStream();
+            response.reset();// 清空输出流
+            // 设定输出文件头
+            response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes("UTF-8"), "ISO8859-1") +time+ ".jpg");
+            // 定义输出类型
+            response.setContentType("application/octet-stream");
+            File resourcePath = new File("");
+            File file=new File(resourcePath.getAbsolutePath()+"/static/picture/",path);
+            FileImageInputStream  fs = new FileImageInputStream(file);
+            int streamLength = (int)fs.length();
+            byte[] image = new byte[streamLength ];
+            fs.read(image,0,streamLength );
+            fs.close();
+            os.write(image);
             os.flush();
             os.close();
         }catch (Exception ex){

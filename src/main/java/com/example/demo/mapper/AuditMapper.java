@@ -16,4 +16,5 @@ public interface AuditMapper {
     Audit getById(@Param("id") Integer id);
     Audit getByIdAll(@Param("id") Integer id);
     int updateStatus(@Param("id") Integer id);
+    int updateUser(@Param("id") Integer id,@Param("name")String name);
 }
