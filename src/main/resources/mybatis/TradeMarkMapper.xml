@@ -18,7 +18,7 @@
     </sql>
     <insert id="tradeMarkAdd" parameterType="com.example.demo.entity.TradeMark" useGeneratedKeys="true" keyProperty="tradeMark.id">
         insert into<include refid="Base_Name"/>(<include refid="Base_Column_List_noId"/>)
-        values (#{tradeMark.tradeMarkName},1)
+        values (#{tradeMark.tradeMarkName},0,1)
     </insert>
     <select id="getAll"  resultMap="BaseResultMap">
         select * from <include refid="Base_Name"/>

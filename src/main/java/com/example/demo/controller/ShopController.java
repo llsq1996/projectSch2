@@ -93,7 +93,6 @@ public class ShopController {
         List<TradeMark> list=tradeMarkMapper.getAll();
         return ToJsonObject.getSuccessJSONObject(list);
     }
-
     /**
      * 获取商家列表
      * @return

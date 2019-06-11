@@ -165,6 +165,25 @@ public class CountController {
                 ob.setName(x.getWorker());
                 ob.setShopList(Lists.newArrayList());
                 map.put(x.getWorker(),ob);
+                ShopListRec shopRec = new ShopListRec();
+                BeanUtils.copyProperties(x, shopRec);
+                if (x.getIsTradeMark() == 1) {
+                    shopRec.setIsTradeMark("是");
+                } else {
+                    shopRec.setIsTradeMark("否");
+                }
+                shopRec.setCTime(Help.timeFormat(x.getCTime()));
+                shopRec.setETime(Help.timeFormat(x.getETime()));
+                shopRec.setAddress(getName(x.getAddress().split(",")));
+                if (Objects.nonNull(x.getDeliPrice())) {
+                    shopRec.setDeliPrice(x.getDeliPrice().toString());
+                }
+                if (Objects.nonNull(x.getDispatch())) {
+                    shopRec.setDispatch(x.getDispatch().toString());
+                }
+                shopRec.setCategory(CategoryEnum.CategoryName(x.getCategory()));
+                shopRec.setDelivery(DeliveryEnum.DeliveryName(x.getDelivery()));
+                ob.getShopList().add(shopRec);
             }
         });
         //统计审核量

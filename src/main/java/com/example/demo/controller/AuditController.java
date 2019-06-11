@@ -379,8 +379,32 @@ public class AuditController {
         shop.setIsTradeMark(1);
         TradeMark tradeMark=tradeMarkMapper.getById(audit.getIdTradeMark());
         Shop shop2=shopMapper.getShopById(tradeMark.getShopId());
+        shop.setPicAddress(shop2.getPicAddress());
         shop.setAddress(shop2.getAddress());
-        return 1==shopMapper.shopAdd(shop);
+        if(1==shopMapper.shopAdd(shop)){
+            String picAddress=shop.getId()+"_"+shop2.getPicAddress();
+            try {
+                File resourcePath = new File("");
+                File file=new File(resourcePath.getAbsolutePath()+"/static/picture/",shop2.getId() + "_" + shop2.getPicAddress());
+                FileImageInputStream  fs = new FileImageInputStream(file);
+                int streamLength = (int)fs.length();
+                byte[] bs = new byte[streamLength ];
+                fs.read(bs,0,streamLength );
+                fs.close();
+                System.out.println("ok");
+                File path = new File("");
+                File absolutePath = new File(path.getAbsolutePath() + "/static/picture/");
+                File upload = new File(absolutePath.getAbsolutePath(), picAddress);
+                FileOutputStream outputStream = new FileOutputStream(upload);
+                outputStream.write(bs);
+                outputStream.close();
+            }catch (Exception ex){
+                System.out.println(ex);
+            }
+            return true;
+        }else {
+            return false;
+        }
     }
 
     /**
@@ -409,6 +433,7 @@ public class AuditController {
                 cell.setCellType(CellType.STRING);
                 head.add(cell.getStringCellValue());
             }
+            System.out.println("rowNum="+rowNum);
             //存到list中
             for(int i=1;i<rowNum;i++){
                 row=sheet.getRow(i);
@@ -453,6 +478,7 @@ public class AuditController {
                 cell=row.createCell(i);
                 cell.setCellValue(map.get(Help.list.get(i)));
             }
+            j++;
         }
         return workbook;
     }
